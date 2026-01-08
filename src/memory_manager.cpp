@@ -5,6 +5,7 @@
 
 using namespace std;
 
+// Constructor 
 MemoryManager::MemoryManager()
     : total_memory(0),
       allocator(AllocatorType::FIRST_FIT),
@@ -16,6 +17,7 @@ MemoryManager::MemoryManager()
       l1(nullptr),
       l2(nullptr) {}
 
+// Initialize physical memory 
 void MemoryManager::init(size_t size) {
     blocks.clear();
     blocks.emplace_back(0, size);
@@ -25,12 +27,14 @@ void MemoryManager::init(size_t size) {
     cout << "Memory initialized with size " << size << "\n";
 }
 
+// Set allocation strategy 
 void MemoryManager::setAllocator(const string& type) {
     if (type == "first_fit") allocator = AllocatorType::FIRST_FIT;
     else if (type == "best_fit") allocator = AllocatorType::BEST_FIT;
     else if (type == "worst_fit") allocator = AllocatorType::WORST_FIT;
 }
 
+// Allocate memory using selected strategy 
 void MemoryManager::mallocBlock(size_t size) {
     auto it = (allocator == AllocatorType::FIRST_FIT) ? first_fit(blocks, size) :
               (allocator == AllocatorType::BEST_FIT)  ? best_fit(blocks, size)  :
@@ -53,6 +57,7 @@ void MemoryManager::mallocBlock(size_t size) {
     cout << "Allocated id=" << it->id << " at address " << it->start << "\n";
 }
 
+// Free allocated memory block 
 void MemoryManager::freeBlock(int id) {
     for (auto it = blocks.begin(); it != blocks.end(); ++it) {
         if (!it->free && it->id == id) {
@@ -77,6 +82,7 @@ void MemoryManager::freeBlock(int id) {
     }
 }
 
+// Display fragmentation statistics 
 void MemoryManager::stats() {
     size_t free_mem = total_memory - used_memory;
     size_t largest_free = 0;
@@ -94,6 +100,7 @@ void MemoryManager::stats() {
          << buddy_internal_frag << " bytes\n";
 }
 
+// Display memory layout 
 void MemoryManager::dump() {
     for (auto &b : blocks) {
         cout << "[" << b.start << " - "
@@ -102,14 +109,16 @@ void MemoryManager::dump() {
     }
 }
 
-/* ===== Buddy ===== */
+// Buddy allocator
 
+// Enable buddy allocator 
 void MemoryManager::enableBuddy() {
     buddy = new BuddyAllocator(total_memory);
     buddy_enabled = true;
     cout << "Buddy allocator enabled\n";
 }
 
+// Allocate using buddy system 
 void MemoryManager::buddyMalloc(size_t size) {
     size_t addr = buddy->alloc(size);
     if (addr == numeric_limits<size_t>::max()) {
@@ -128,6 +137,7 @@ void MemoryManager::buddyMalloc(size_t size) {
     cout << "Buddy allocated at address " << addr << "\n";
 }
 
+// Free buddy-allocated block 
 void MemoryManager::buddyFree(size_t addr, size_t size) {
     if (buddy_map.count(addr)) {
         size_t req = buddy_map[addr];
@@ -140,23 +150,27 @@ void MemoryManager::buddyFree(size_t addr, size_t size) {
     buddy->free(addr, size);
 }
 
+// Display buddy free lists 
 void MemoryManager::dumpBuddy() {
     buddy->dump();
 }
 
-/* ===== Cache ===== */
+// Cache
 
+// Initialize L1 and L2 caches 
 void MemoryManager::initCache() {
     l1 = new Cache(128, 16);
     l2 = new Cache(512, 32);
     cout << "L1 and L2 cache initialized\n";
 }
 
+// Access memory through cache hierarchy 
 void MemoryManager::accessMemory(size_t addr) {
     if (!l1->access(addr))
         l2->access(addr);
 }
 
+// Display cache statistics 
 void MemoryManager::cacheStats() {
     cout << "L1 Cache:\n";
     l1->stats();

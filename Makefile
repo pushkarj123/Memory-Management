@@ -1,12 +1,12 @@
-# ===== Compiler =====
+# Compiler 
 CXX := g++
 CXXFLAGS := -std=c++17 -Wall -Wextra -Iinclude
 
-# ===== Directories =====
+# Directories 
 SRC_DIR := src
 BIN_DIR := bin
 
-# ===== Source files (IMPORTANT) =====
+# Source files
 SRCS := \
 $(SRC_DIR)/main.cpp \
 $(SRC_DIR)/memory_manager.cpp \
@@ -16,19 +16,19 @@ $(SRC_DIR)/allocator/worst_fit.cpp \
 $(SRC_DIR)/allocator/buddy_allocator.cpp \
 $(SRC_DIR)/cache/cache.cpp
 
-# ===== Output =====
+# Output 
 TARGET := $(BIN_DIR)/memsim
 
-# ===== Default target =====
+# Default target 
 all: $(TARGET)
 
-# ===== Link =====
+# Link 
 $(TARGET): $(SRCS)
 	@mkdir -p $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) $(SRCS) -o $(TARGET)
 	@echo "Build successful: $(TARGET)"
 
-# ===== Clean =====
+# Clean 
 clean:
 	rm -rf $(BIN_DIR)
 
