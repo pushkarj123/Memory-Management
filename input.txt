@@ -1,0 +1,17 @@
+init 1024
+set first_fit
+malloc 100
+malloc 200
+stats
+dump
+
+enable_buddy
+buddy_malloc 100
+dump_buddy
+stats
+
+init_cache
+access 64
+access 64
+access 128
+cache_stats

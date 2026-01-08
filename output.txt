@@ -1,0 +1,25 @@
+Memory initialized with size 1024
+Allocated id=1 at address 0
+Allocated id=2 at address 100
+Internal fragmentation (FF/BF/WF): 0 bytes
+External fragmentation: 0%
+Buddy internal fragmentation: 0 bytes
+[0 - 99] USED
+[100 - 299] USED
+[300 - 1023] FREE
+Buddy allocator enabled
+Buddy allocated at address 0
+Order 7: 128 
+Order 8: 256 
+Order 9: 512 
+Order 10: 
+Internal fragmentation (FF/BF/WF): 0 bytes
+External fragmentation: 0%
+Buddy internal fragmentation: 28 bytes
+L1 and L2 cache initialized
+L1 Cache:
+Hits: 1
+Misses: 2
+L2 Cache:
+Hits: 0
+Misses: 2
