@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <cstddef>
-
+// cache struct define
 struct CacheLine {
     bool valid;
     size_t tag;
